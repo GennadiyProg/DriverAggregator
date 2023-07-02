@@ -1,0 +1,381 @@
+openapi: "3.0.3"
+info:
+  title: "DriverAggregator API"
+  description: "DriverAggregator API"
+  version: "1.0.0"
+servers:
+  - url: "https://localhost:8080"
+paths:
+  /driver/:
+    post:
+      summary: "Создание нового водителя"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DriverDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DriverVm"
+  /driver/page/{pageNumber}/{pageSize}:
+    get:
+      summary: "Постраничный просмотр списке всех водителей"
+      operationId: "findAll"
+      parameters:
+        - name: "pageNumber"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+        - name: "pageSize"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DriverVm"
+  /driver/{driverId}/addcar/{vin}:
+    patch:
+      summary: "Добавление автомобиля водителю"
+      operationId: "addCar"
+      parameters:
+        - name: "driverId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "vin"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DriverVm"
+  /driver/{driverId}/removecar/{vin}:
+    patch:
+      summary: "Органичения права собственности автомобилем"
+      operationId: "removeCar"
+      parameters:
+        - name: "driverId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+        - name: "vin"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DriverVm"
+  /driver/{id}:
+    get:
+      summary: "Поиск водителя по id"
+      operationId: "findById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DriverVm"
+  /car/:
+    post:
+      summary: "Создание нового авто"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CarDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CarVm"
+  /car/{vin}/detail/{detailSerialNumber}/add:
+    post:
+      summary: "Добавление деталей в автомобиль"
+      operationId: "addDetail"
+      parameters:
+        - name: "vin"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "detailSerialNumber"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CarVm"
+  /car/{vin}/detail/{detailSerialNumber}/remove:
+    post:
+      summary: "Удаление деталией из автомобиля"
+      operationId: "removeDetail"
+      parameters:
+        - name: "vin"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+        - name: "detailSerialNumber"
+          in: "path"
+          required: true
+          schema:
+            type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CarVm"
+  /detail/:
+    post:
+      summary: "Сохранение новой детали"
+      operationId: "create"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Detail"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Detail"
+  /driver/{driverId}/bill/:
+    get:
+      summary: "Получение счета водителя"
+      operationId: "findByDriver"
+      parameters:
+        - name: "driverId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BillVm"
+  /driver/{driverId}/bill/replenish:
+    post:
+      summary: "Пополнение счета водителя"
+      operationId: "replenish"
+      parameters:
+        - name: "driverId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BillDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BillVm"
+  /driver/{driverId}/bill/withdraw:
+    post:
+      summary: "Снятие средств со счета водителя"
+      operationId: "withdraw"
+      parameters:
+        - name: "driverId"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BillDto"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BillVm"
+components:
+  schemas:
+    DriverDto:
+      type: "object"
+      properties:
+        fio:
+          type: "string"
+        passport:
+          type: "string"
+        category:
+          type: "string"
+          enum:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+        birthDate:
+          type: "string"
+          format: "date"
+        experience:
+          type: "integer"
+          format: "int32"
+    DetailType:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+    Detail:
+      type: "object"
+      properties:
+        serialNumber:
+          type: "string"
+        name:
+          type: "string"
+        type:
+          $ref: "#/components/schemas/DetailType"
+        cost:
+          type: "integer"
+          format: "int32"
+    CarVm:
+      type: "object"
+      properties:
+        vin:
+          type: "string"
+        number:
+          type: "string"
+        owner:
+          type: "integer"
+          format: "int64"
+        details:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Detail"
+    DriverVm:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        fio:
+          type: "string"
+        passport:
+          type: "string"
+        category:
+          type: "string"
+          enum:
+            - "A"
+            - "B"
+            - "C"
+            - "D"
+        birthDate:
+          type: "string"
+          format: "date"
+        experience:
+          type: "integer"
+          format: "int32"
+        cars:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/CarVm"
+    CarDto:
+      type: "object"
+      properties:
+        vin:
+          type: "string"
+        number:
+          type: "string"
+        details:
+          type: "array"
+          items:
+            $ref: "#/components/schemas/Detail"
+        owner:
+          type: "integer"
+          format: "int64"
+    BillVm:
+      type: "object"
+      properties:
+        driver:
+          $ref: "#/components/schemas/DriverVm"
+        balanceInRedDollars:
+          type: "number"
+          format: "double"
+        balanceInGreenDollars:
+          type: "number"
+          format: "double"
+        balanceInBlueDollars:
+          type: "number"
+          format: "double"
+    BillDto:
+      type: "object"
+      properties:
+        type:
+          type: "string"
+          enum:
+            - "RED"
+            - "GREEN"
+            - "BLUE"
+            - "conversionValue"
+        amount:
+          type: "number"
+          format: "double"
