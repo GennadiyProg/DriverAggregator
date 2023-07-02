@@ -25,7 +25,7 @@ paths:
                 $ref: "#/components/schemas/DriverVm"
   /driver/page/{pageNumber}/{pageSize}:
     get:
-      summary: "Постраничный просмотр списке всех водителей"
+      summary: "Постраничный просмотр списка всех водителей"
       operationId: "findAll"
       parameters:
         - name: "pageNumber"
@@ -152,7 +152,7 @@ paths:
                 $ref: "#/components/schemas/CarVm"
   /car/{vin}/detail/{detailSerialNumber}/remove:
     post:
-      summary: "Удаление деталией из автомобиля"
+      summary: "Удаление деталей из автомобиля"
       operationId: "removeDetail"
       parameters:
         - name: "vin"
